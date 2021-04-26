@@ -1,7 +1,9 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .models import Event, Ticket
-from .serializers import (EventSerializer)
+from .serializers import (EventSerializer, TicketSerializer,
+                          GenerateTicketSerializer)
+from .utils import auto_generate_tickets
 
 
 class EventGetViewSet(viewsets.ViewSet):
@@ -10,8 +12,6 @@ class EventGetViewSet(viewsets.ViewSet):
         events = Event.objects.all()
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
-
-# Above can also be written as
 
 
 class EventPostViewSet(viewsets.ViewSet):
@@ -37,6 +37,7 @@ class EventPostViewSet(viewsets.ViewSet):
             new_event.event_status = serializer.validated_data["event_status"]
 
         new_event.save()
+        auto_generate_tickets(new_event.event_name, new_event.initial_tickets)
 
         return Response({'success': new_event.id}, status=status.HTTP_201_CREATED)
 
@@ -57,4 +58,33 @@ class EventDeleteViewSet(viewsets.ViewSet):
         event_id = kwargs.get('event_id')
         filtered_event = Event.objects.filter(id=event_id)
         filtered_event.delete()
+        return Response({"success": "Deleted"}, status=status.HTTP_200_OK)
+
+
+class TicketGetViewSet(viewsets.ViewSet):
+
+    def list(self, request, *args, **kwargs):
+
+        events = Ticket.objects.all()
+        serializer = TicketSerializer(events, many=True)
+        return Response(serializer.data)
+
+
+class TicketPostViewSet(viewsets.ViewSet):
+
+    def post(self, request):
+        serializer = GenerateTicketSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        auto_generate_tickets(serializer.data['event_name'],
+                              serializer.data['no_of_tickets'])
+        return Response({'success': serializer.data['event_name']}, status=status.HTTP_201_CREATED)
+
+
+class TicketDeleteViewSet(viewsets.ViewSet):
+
+    def delete(self, request, *args, **kwargs):
+        ticket_id = kwargs.get('ticket_id')
+        filtered_ticket = Ticket.objects.filter(id=ticket_id)
+        filtered_ticket.delete()
         return Response({"success": "Deleted"}, status=status.HTTP_200_OK)

@@ -10,6 +10,11 @@ relationship between them with ForeignKey. This was used since one event would h
 format for the frontend to receive. The views are written in ViewSet. I have not included routers in 
 this test since it is a small application. Once the views are written, urls need to be added in urls.py file.
 
-4. Unit tests are then to be added to help with any errors. Library such as django-nose was installed.
+4. Unit tests are then to be added to help with any errors. Library such as django-nose was installed. Not 
+all the unit tests are written but wrote event ones relating to CRUD.
 
-5. Frontend Development can then be build for this specific view(s) and data can be fetched using axios.
+5. API documentation can also be added with swagger UI.
+
+6. Frontend Development can then be build for this specific view(s) and data can be fetched using axios.
+Vuelidate is what was used to add rules to the forms. Although not implemented but the frontend development can be
+further made better by using Vuex (state management).  

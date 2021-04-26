@@ -1,6 +1,8 @@
 from django.urls import path
 from .views import (EventGetViewSet, EventPostViewSet,
-                    EventPutViewSet, EventDeleteViewSet)
+                    EventPutViewSet, EventDeleteViewSet,
+                    TicketGetViewSet, TicketPostViewSet,
+                    TicketDeleteViewSet)
 
 urlpatterns = [
     # Events
@@ -8,4 +10,10 @@ urlpatterns = [
     path('create-event/', EventPostViewSet.as_view({'post': 'create'}), name='create-event'),
     path('edit-event/<str:event_id>/', EventPutViewSet.as_view({'put': 'put'}), name='edit-event'),
     path('delete-event/<str:event_id>/', EventDeleteViewSet.as_view({'delete': 'delete'}), name='delete-event'),
+
+    # Tickets
+    path('tickets/', TicketGetViewSet.as_view({'get': 'list'}), name='tickets'),
+    path('create-ticket/', TicketPostViewSet.as_view({'post': 'post'}), name='create-ticket'),
+    path('delete-ticket/<str:ticket_id>/', TicketDeleteViewSet.as_view({'delete': 'delete'}), name='delete-ticket'),
+
 ]

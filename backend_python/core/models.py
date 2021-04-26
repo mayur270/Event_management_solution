@@ -34,7 +34,6 @@ def generate_ticket_token():
 class Ticket(models.Model):
     id = models.CharField(primary_key=True, max_length=8, editable=False)
     event_name = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="ticket")
-    full_name = models.CharField(max_length=255, null=True, blank=True)
     no_of_tickets = models.PositiveIntegerField(null=True, blank=True)
     redeemed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)

@@ -18,3 +18,17 @@ class EventSerializer(serializers.ModelSerializer):
 
     def get_redeemed_ticket_count(self, obj):
         return Ticket.objects.filter(event_name=obj, redeemed=True).count()
+
+
+class TicketSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+    event_name = serializers.CharField(source='event_name.event_name')
+
+    class Meta:
+        model = Ticket
+        fields = '__all__'
+
+
+class GenerateTicketSerializer(serializers.Serializer):
+    event_id = serializers.CharField(max_length=255, required=True)
+    no_of_tickets = serializers.IntegerField(required=True)
