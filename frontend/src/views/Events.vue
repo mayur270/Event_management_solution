@@ -355,7 +355,7 @@ import {getAPI} from '../main';
 }
 
 .eventTable tr:hover:not(.v-table__expanded__content) {
-  background-color: none !important;
+  background-color: #e8f4f8 !important;
 }
 
  tbody tr:nth-of-type(odd) {

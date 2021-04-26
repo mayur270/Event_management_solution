@@ -25,6 +25,14 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   class="mb-2 ml-2"
+                  depressed
+                  color="#fca311"
+                  @click.prevent="fetchTasks()"
+                >
+                  <v-icon small>fas fa-sync-alt</v-icon>
+                </v-btn>
+                <v-btn
+                  class="mb-2 ml-2"
                   v-bind="attrs"
                   v-on="on"
                   depressed
@@ -208,6 +216,10 @@ import { getAPI } from '../main';
         this.fetchEvents();
       },
 
+      refreshPage() {
+        window.location.reload();
+      },
+
       editItem (item) {
         this.editedIndex = this.tickets.indexOf(item)
         this.editedItem = Object.assign({}, item)
@@ -234,14 +246,10 @@ import { getAPI } from '../main';
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
         })
+        this.fetchTickets()
       },
 
       save () {
-        if (this.editedIndex > -1) {
-
-          Object.assign(this.event_name[this.editedIndex], this.editedItem)
-        
-        } else {
 
           getAPI.post('/create-ticket/', 
                       {event_name: this.editedItem.event_name,
@@ -251,17 +259,14 @@ import { getAPI } from '../main';
             console.log(response);
           })
 
-          this.event_name.push(this.editedItem)
+          this.close()
+
         }
+        
+      }
+}
 
-        this.close()
-      },
 
-
-
-    },
-
-  }
 </script>
 
 <style>
@@ -287,7 +292,7 @@ import { getAPI } from '../main';
 }
 
 .eventTable tr:hover:not(.v-table__expanded__content) {
-  background-color: none !important;
+  background-color: #e8f4f8 !important;
 }
 
 

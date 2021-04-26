@@ -10,3 +10,10 @@ Clone the repository using 'git clone'
 
 ##### Though Process
 Open process.md file.
+
+
+##### The application
+There are 3 pages:
+1. Create Event - Form page to add an event
+2. Events - All events are displayed on this page
+3. Tickets - All tickets are displayed here and more can be added for events from here
