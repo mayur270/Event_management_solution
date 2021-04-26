@@ -16,12 +16,16 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Event',
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ('id', models.UUIDField(default=uuid.uuid4, editable=False,
+                                        primary_key=True, serialize=False)),
                 ('event_name', models.CharField(max_length=255, unique=True)),
                 ('event_date', models.DateField()),
                 ('event_location', models.CharField(max_length=255)),
                 ('initial_tickets', models.PositiveIntegerField(blank=True)),
-                ('event_status', models.CharField(choices=[('OnTime', 'OnTime'), ('Rescheduled', 'Rescheduled'), ('Cancelled', 'Cancelled')], default='OnTime', max_length=30)),
+                ('event_status', models.CharField(choices=[('OnTime', 'OnTime'),
+                                                           ('Rescheduled', 'Rescheduled'),
+                                                           ('Cancelled', 'Cancelled')],
+                                                  default='OnTime', max_length=30)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
             ],
@@ -29,11 +33,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Ticket',
             fields=[
-                ('id', models.CharField(editable=False, max_length=8, primary_key=True, serialize=False)),
+                ('id', models.CharField(editable=False, max_length=8,
+                                        primary_key=True, serialize=False)),
                 ('no_of_tickets', models.PositiveIntegerField(blank=True, null=True)),
                 ('redeemed', models.BooleanField(default=False)),
                 ('created', models.DateTimeField(auto_now_add=True)),
-                ('event_name', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='ticket', to='core.event')),
+                ('event_name', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                                 related_name='ticket', to='core.event')),
             ],
         ),
     ]
