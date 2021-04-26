@@ -88,3 +88,15 @@ class TicketDeleteViewSet(viewsets.ViewSet):
         filtered_ticket = Ticket.objects.filter(id=ticket_id)
         filtered_ticket.delete()
         return Response({"success": "Deleted"}, status=status.HTTP_200_OK)
+
+
+class RedeemViewSet(viewsets.ViewSet):
+
+    def get(self, request, *args, **kwargs):
+        ticket_id = kwargs.get('ticket_id')
+
+        if Ticket.objects.filter(id=ticket_id, redeemed=True):
+            return Response({"gone": "Ticket has already been redeemed"}, status=status.HTTP_410_GONE)
+
+        Ticket.objects.filter(id=ticket_id).update(redeemed=True)
+        return Response({"success": ""}, status=status.HTTP_200_OK)

@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (EventGetViewSet, EventPostViewSet,
                     EventPutViewSet, EventDeleteViewSet,
                     TicketGetViewSet, TicketPostViewSet,
-                    TicketDeleteViewSet)
+                    TicketDeleteViewSet, RedeemViewSet)
 
 urlpatterns = [
     # Events
@@ -16,4 +16,6 @@ urlpatterns = [
     path('create-ticket/', TicketPostViewSet.as_view({'post': 'post'}), name='create-ticket'),
     path('delete-ticket/<str:ticket_id>/', TicketDeleteViewSet.as_view({'delete': 'delete'}), name='delete-ticket'),
 
+    # Redeem Ticket
+    path('redeem/<str:ticket_id>/', RedeemViewSet.as_view({'get': 'get'}), name='redeem-ticket'),
 ]
