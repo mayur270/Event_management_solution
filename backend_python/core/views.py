@@ -1,8 +1,15 @@
-from rest_framework import viewsets, status
+from rest_framework import status, viewsets
 from rest_framework.response import Response
-from .models import Event, Ticket
-from .serializers import (EventSerializer, TicketSerializer,
-                          GenerateTicketSerializer)
+
+from .models import (
+    Event,
+    Ticket
+)
+from .serializers import (
+    EventSerializer,
+    GenerateTicketSerializer,
+    TicketSerializer,
+)
 from .utils import auto_generate_tickets
 
 
@@ -22,24 +29,30 @@ class EventPostViewSet(viewsets.ViewSet):
         new_event = Event()
 
         if serializer.validated_data.get('event_name'):
-            new_event.event_name = serializer.validated_data["event_name"]
+            new_event.event_name = serializer.validated_data[
+                "event_name"]
 
         if serializer.validated_data.get('event_date'):
-            new_event.event_date = serializer.validated_data["event_date"]
+            new_event.event_date = serializer.validated_data[
+                "event_date"]
 
         if serializer.validated_data.get('event_location'):
-            new_event.event_location = serializer.validated_data["event_location"]
+            new_event.event_location = serializer.validated_data[
+                "event_location"]
 
         if serializer.validated_data.get('initial_tickets'):
-            new_event.initial_tickets = serializer.validated_data["initial_tickets"]
+            new_event.initial_tickets = serializer.validated_data[
+                "initial_tickets"]
 
         if serializer.validated_data.get('event_status'):
-            new_event.event_status = serializer.validated_data["event_status"]
+            new_event.event_status = serializer.validated_data[
+                "event_status"]
 
         new_event.save()
         auto_generate_tickets(new_event.event_name, new_event.initial_tickets)
 
-        return Response({'success': new_event.id}, status=status.HTTP_201_CREATED)
+        return Response({'success': new_event.id},
+                        status=status.HTTP_201_CREATED)
 
 
 class EventPutViewSet(viewsets.ViewSet):
@@ -78,7 +91,8 @@ class TicketPostViewSet(viewsets.ViewSet):
 
         auto_generate_tickets(serializer.data['event_name'],
                               serializer.data['no_of_tickets'])
-        return Response({'success': serializer.data['event_name']}, status=status.HTTP_201_CREATED)
+        return Response({'success': serializer.data['event_name']},
+                        status=status.HTTP_201_CREATED)
 
 
 class TicketDeleteViewSet(viewsets.ViewSet):
@@ -96,7 +110,8 @@ class RedeemViewSet(viewsets.ViewSet):
         ticket_id = kwargs.get('ticket_id')
 
         if Ticket.objects.filter(id=ticket_id, redeemed=True):
-            return Response({"gone": "Ticket has already been redeemed"}, status=status.HTTP_410_GONE)
+            return Response({"gone": "Ticket has already been redeemed"},
+                            status=status.HTTP_410_GONE)
 
         Ticket.objects.filter(id=ticket_id).update(redeemed=True)
         return Response({"success": ""}, status=status.HTTP_200_OK)

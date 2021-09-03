@@ -19,7 +19,11 @@ class Event(models.Model):
     event_date = models.DateField(null=False, blank=False)
     event_location = models.CharField(max_length=255, blank=False)
     initial_tickets = models.PositiveIntegerField(null=False, blank=True)
-    event_status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='OnTime')
+    event_status = models.CharField(
+        max_length=30,
+        choices=STATUS_CHOICES,
+        default='OnTime'
+    )
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
@@ -33,7 +37,11 @@ def generate_ticket_token():
 
 class Ticket(models.Model):
     id = models.CharField(primary_key=True, max_length=8, editable=False)
-    event_name = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="ticket")
+    event_name = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name="ticket"
+    )
     no_of_tickets = models.PositiveIntegerField(null=True, blank=True)
     redeemed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)

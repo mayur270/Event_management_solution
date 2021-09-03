@@ -9,6 +9,8 @@ djangorestframework = "*"
 django-cors-headers = "*"
 django-nose = "*"
 flake8 = "*"
+tox = "*"
+safety = "*"
 
 [dev-packages]
 
