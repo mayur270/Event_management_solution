@@ -12,17 +12,21 @@ class TestEvent(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-        self.event_1 = Event.objects.create(event_name='Summer Festival',
-                                            event_date='2021-04-22',
-                                            initial_tickets='5',
-                                            event_location='Birmingham',
-                                            event_status='OnTime')
+        self.event_1 = Event.objects.create(
+            event_name='Summer Festival',
+            event_date='2021-04-22',
+            initial_tickets='5',
+            event_location='Birmingham',
+            event_status='OnTime'
+        )
 
-        self.event_2 = Event.objects.create(event_name='Christmas',
-                                            event_date='2021-12-25',
-                                            initial_tickets='2',
-                                            event_location='London',
-                                            event_status='Cancelled')
+        self.event_2 = Event.objects.create(
+            event_name='Christmas',
+            event_date='2021-12-25',
+            initial_tickets='2',
+            event_location='London',
+            event_status='Cancelled'
+        )
 
     def teardown(self):
         Event.objects.all().delete()
@@ -46,11 +50,13 @@ class TestEvent(TestCase):
         Desc: Creating a new event
         """
 
-        data = {'event_name': 'Boxing Day',
+        data = {
+                'event_name': 'Boxing Day',
                 'event_date': '2021-12-26',
                 'initial_tickets': '2',
                 'event_location': 'London',
-                'event_status': 'OnTime'}
+                'event_status': 'OnTime'
+                }
 
         url = reverse('create-event')
         response = self.client.post(url, data, format='json')
@@ -62,22 +68,27 @@ class TestEvent(TestCase):
     def test_event_post_view_unique_name(self):
         """
         Class: EventPostViewSet
-        Desc: 400 Error - Adding new event_name with same name is not permitted
+        Desc: 400 Error - Adding new event_name with same
+                          name is not permitted
         """
 
-        data = {'event_name': 'Christmas',
+        data = {
+                'event_name': 'Christmas',
                 'event_date': '2021-12-25',
                 'initial_tickets': '2',
                 'event_location': 'London',
-                'event_status': 'Cancelled'}
+                'event_status': 'Cancelled'
+                }
 
         url = reverse('create-event')
         response = self.client.post(url, data, format='json')
         resp_obj = json.loads(str(response.content, 'utf-8'))
 
         self.assertEquals(response.status_code, 400)
-        self.assertEquals(resp_obj, {'event_name':  ['event with this event '
-                                                     'name already exists.']})
+        self.assertEquals(resp_obj, {
+            'event_name':  [
+                'event with this event name already exists.'
+            ]})
 
     def test_event_put_view(self):
         """
