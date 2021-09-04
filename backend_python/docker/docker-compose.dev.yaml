@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  postgres_db:
+    image: postgres:13
+    restart: always
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: demo-pgadmin
+    depends_on:
+      - postgres_db
+    ports:
+      - "5050:5050"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: root
+    restart: always
+
+  pgweb_dev:
+    restart: always
+    image: sosedoff/pgweb
+    ports:
+      - "8081:8081"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres_db:5432/postgres?sslmode=disable
+    links:
+      - postgres_db:postgres_db
+    depends_on:
+      - postgres_db
+
+volumes:
+  postgres_data:
