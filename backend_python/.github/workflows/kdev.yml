@@ -1,4 +1,5 @@
-name: Event Management Solutions
+name: Event_Management_Solution
+
 on:
   push:
     branches:
