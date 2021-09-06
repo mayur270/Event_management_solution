@@ -1,0 +1,35 @@
+name: Event_Management_Solution
+on:
+  push:
+    branches:
+      - 'dev'
+  pull_request:
+    branches:
+      - 'dev'
+
+jobs:
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.8 ]
+
+    steps:
+      - name: Fetch code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run tox (linting)
+        run: tox
+      - name: Run Tests
+        run: |
+          python manage.py test
