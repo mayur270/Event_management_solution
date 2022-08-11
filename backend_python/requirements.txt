@@ -2,7 +2,7 @@ asgiref==3.4.1
 backports.entry-points-selectable==1.1.0
 colorama==0.4.4
 distlib==0.3.2
-Django==3.2.7
+Django==3.2.15
 django-cors-headers==3.8.0
 django-nose==1.4.7
 djangorestframework==3.12.4
